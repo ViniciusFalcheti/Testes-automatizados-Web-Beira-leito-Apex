@@ -19,9 +19,9 @@ def init_driver():
 
     try:
         options = Options()
-        options.add_argument("--headless=new")  # modo sem janela
-        options.add_argument("--no-sandbox")
-        options.add_argument("--disable-dev-shm-usage")
+        # options.add_argument("--headless=new")  # modo sem janela
+        # options.add_argument("--no-sandbox")
+        # options.add_argument("--disable-dev-shm-usage")
 
         driver = webdriver.Chrome(options=options)
         wait = WebDriverWait(driver, 10)

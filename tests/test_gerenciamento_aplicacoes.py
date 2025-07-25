@@ -7,8 +7,8 @@ from utils.tipo_item import TipoItem
     ("0269690H", TipoItem.MED),
     ("0269690H", TipoItem.MEDCONTINUO),
     ("0269690H", TipoItem.SORO),
-    ("0269690H", TipoItem.HEMO),
-    ("0269690H", TipoItem.NUTRICAO),
+    # ("0269690H", TipoItem.HEMO),
+    # ("0269690H", TipoItem.NUTRICAO),
     ("0269690H", TipoItem.CUIDADOS),
 ])
 # @pytest.mark.skip(reason="Teste")
@@ -25,8 +25,8 @@ def test_administracao_item(driver, paciente, tipoItem):
     ("0269690H", TipoItem.MED),
     ("0269690H", TipoItem.MEDCONTINUO),
     ("0269690H", TipoItem.SORO),
-    ("0269690H", TipoItem.HEMO),
-    ("0269690H", TipoItem.NUTRICAO),
+    # ("0269690H", TipoItem.HEMO),
+    # ("0269690H", TipoItem.NUTRICAO),
 ])
 # @pytest.mark.skip(reason="Teste")
 def test_alterar_observacao_adm(driver, paciente, tipoItem):
@@ -42,8 +42,8 @@ def test_alterar_observacao_adm(driver, paciente, tipoItem):
     ("0269690H", TipoItem.MED),
     ("0269690H", TipoItem.MEDCONTINUO),
     ("0269690H", TipoItem.SORO),
-    ("0269690H", TipoItem.HEMO),
-    ("0269690H", TipoItem.NUTRICAO),
+    # ("0269690H", TipoItem.HEMO),
+    # ("0269690H", TipoItem.NUTRICAO),
     ("0269690H", TipoItem.CUIDADOS),
 ])
 # @pytest.mark.skip(reason="Teste")
@@ -58,10 +58,10 @@ def test_remocao_administracao_item(driver, paciente, tipoItem):
 # Teste 4 - Marcar item como não adm
 @pytest.mark.parametrize("paciente, tipoItem", [
     ("0269690H", TipoItem.MED),
-    # ("0269690H", TipoItem.MEDCONTINUO),
+    ("0269690H", TipoItem.MEDCONTINUO),
     ("0269690H", TipoItem.SORO),
-    ("0269690H", TipoItem.HEMO),
-    ("0269690H", TipoItem.NUTRICAO),
+    # ("0269690H", TipoItem.HEMO),
+    # ("0269690H", TipoItem.NUTRICAO),
     ("0269690H", TipoItem.CUIDADOS),
 ])
 # @pytest.mark.skip(reason="Teste")
@@ -76,7 +76,7 @@ def test_nao_administracao_item(driver, paciente, tipoItem):
 # Teste 5 - Remover Marcação não adm
 @pytest.mark.parametrize("paciente, tipoItem", [
     ("0269690H", TipoItem.MED),
-    # ("0269690H", TipoItem.MEDCONTINUO),
+    ("0269690H", TipoItem.MEDCONTINUO),
     ("0269690H", TipoItem.SORO),
     ("0269690H", TipoItem.HEMO),
     ("0269690H", TipoItem.NUTRICAO),

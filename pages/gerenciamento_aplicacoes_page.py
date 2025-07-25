@@ -134,6 +134,22 @@ class GerenciamentoAplicacoesPage:
         except ValueError:
             return False
     
+    def verifica_alerta_sucesso(self, tipo_msg="padrao"):
+        try:
+            print("Etapa: Verificando se apareceu um alerta de sucesso")
+            WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".a-AlertMessage-details")))
+            alerta = self.driver.find_element(By.CSS_SELECTOR, ".a-AlertMessage-details").text
+
+            if tipo_msg == "padrao":
+                alerta_msg = "Alteração da observação realizada com Sucesso!"
+            elif tipo_msg == "obs":
+                alerta_msg = "Alteração da observação realizada com Sucesso!"                
+
+            if alerta != alerta_msg:
+                raise Exception("Alerta de sucesso não encontrado! Algo ocorreu errado")
+        except Exception as e:
+            raise Exception("Alerta de sucesso não encontrado! Algo ocorreu errado")
+        
     # Funções de ações
     def administra_item(self, tipoItem: TipoItem):
         try:
@@ -231,9 +247,12 @@ class GerenciamentoAplicacoesPage:
             except Exception:
                 print("Campo P1_QTD_CONTINUO_ADM não encontrado — ignorando")
 
+
             time.sleep(0.5)
             print("Clicando no botão administrar")
             self.driver.find_element(By.ID, "btn_administrar").click()
+
+            self.verifica_alerta_sucesso()
 
         except Exception as e:
             print("Erro geral em administra_item:", e)
@@ -266,6 +285,13 @@ class GerenciamentoAplicacoesPage:
             print(f"Quantidade de linhas na grid de {tipoItem}: {qtd_linhas}")
 
             for i in range(1, qtd_linhas + 1):
+                if tipoItem == "med" or tipoItem == "medContinuo":
+                    ehContinuo = True if self.driver.find_element(By.XPATH, f'//*[@id="{idGrid}"]//table//tbody/tr[{i+1}]/td[11]/a').text == "CONTINUO" else False
+                else:
+                    ehContinuo = False
+
+                if ehContinuo and (tipoItem != "medContinuo"):
+                    continue
 
                 result = self.verificar_celula(idGrid, i, False, acao="alteraObsAdm")
 
@@ -306,6 +332,8 @@ class GerenciamentoAplicacoesPage:
             time.sleep(0.5)
 
             self.driver.find_element(By.ID, "btn_salvar_alteracao_obs").click()
+
+            self.verifica_alerta_sucesso(tipo_msg="obs")
         except Exception as e:
             print("Erro geral em alterar_observacao_adm:", e)
             raise    
@@ -378,6 +406,8 @@ class GerenciamentoAplicacoesPage:
                         checkbox.click()
 
             self.driver.find_element(By.ID, "btn_remover_adm").click()
+
+            self.verifica_alerta_sucesso()
         except Exception as e:
             print("Erro geral em remove_adm:", e)
             raise    
@@ -406,6 +436,14 @@ class GerenciamentoAplicacoesPage:
             # self.driver.execute_script("arguments[0].scrollIntoView({behavior: 'auto', block: 'center'});", grid)
 
             for i in range(1, qtd_linhas+1):
+                if tipoItem == "med" or tipoItem == "medContinuo":
+                    ehContinuo = True if self.driver.find_element(By.XPATH, f'//*[@id="{idGrid}"]//table//tbody/tr[{i+1}]/td[11]/a').text == "CONTINUO" else False
+                else:
+                    ehContinuo = False
+
+                if ehContinuo and (tipoItem != "medContinuo"):
+                    continue
+
                 result = self.verificar_celula(idGrid, i, False, acao="marcarComoNaoAdm")
 
                 if result:
@@ -439,6 +477,8 @@ class GerenciamentoAplicacoesPage:
             motivo_nao_adm.send_keys(f"Teste de não administração de {tipoItem.capitalize()} Apex")
 
             self.driver.find_element(By.ID, "btn_nao_administrar").click()
+
+            self.verifica_alerta_sucesso()
         except Exception as e:
             print("Erro geral em marcar_item_como_nao_adm:", e)
             raise
@@ -462,6 +502,14 @@ class GerenciamentoAplicacoesPage:
             print(f"Quantidade de linhas na grid de {tipoItem}: {qtd_linhas}")
 
             for i in range(1, qtd_linhas + 1):
+                if tipoItem == "med" or tipoItem == "medContinuo":
+                    ehContinuo = True if self.driver.find_element(By.XPATH, f'//*[@id="{idGrid}"]//table//tbody/tr[{i+1}]/td[11]/a').text == "CONTINUO" else False
+                else:
+                    ehContinuo = False
+
+                if ehContinuo and (tipoItem != "medContinuo"):
+                    continue
+
                 result = self.verificar_celula(idGrid, i, False, acao="removerNaoAdm")
 
                 if result:
@@ -496,6 +544,8 @@ class GerenciamentoAplicacoesPage:
             print("Etapa: Clicando no botão de confirma remoção")
             time.sleep(1)
             self.driver.find_element(By.CSS_SELECTOR, ".js-confirmBtn").click()
+
+            self.verifica_alerta_sucesso()
                     
         except Exception as e:
             print("Erro geral em remover_marcacao_nao_adm:", e)
